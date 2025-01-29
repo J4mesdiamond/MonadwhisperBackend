@@ -3,26 +3,8 @@ const router = express.Router();
 const Category = require('../../Schema/Category');
 const { protect } = require('../../Middleware/auth');
 
-// Apply authentication middleware to all routes
-router.use(protect);
-
-// Create category (now requires authentication)
-router.post('/', async (req, res) => {
-  try {
-    const category = await Category.create(req.body);
-    res.status(201).json({
-      success: true,
-      data: category
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message
-    });
-  }
-});
-
-// Get all categories (accessible to all authenticated users)
+// Public routes (no authentication required)
+// Get all categories
 router.get('/', async (req, res) => {
   try {
     const categories = await Category.find();
@@ -61,8 +43,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Protected routes (require authentication)
+// Create category
+router.post('/', protect, async (req, res) => {
+  try {
+    const category = await Category.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: category
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
 // Update category
-router.put('/:id', async (req, res) => {
+router.put('/:id', protect, async (req, res) => {
   try {
     const category = await Category.findByIdAndUpdate(
       req.params.id,
@@ -91,7 +90,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete category
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protect, async (req, res) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
     if (!category) {

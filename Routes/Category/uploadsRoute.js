@@ -42,7 +42,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
     const uploadResponse = await cloudinary.uploader.upload(
       `data:${fileType};base64,${fileStr}`,
       {
-        folder: 'your-app-name', // Optional: organize uploads in folders
+        folder: 'monadWhisper', // Optional: organize uploads in folders
         resource_type: 'auto',
         transformation: [
           { quality: 'auto:good' }, // Optional: optimize image quality

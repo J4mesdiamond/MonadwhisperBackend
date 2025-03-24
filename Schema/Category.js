@@ -1,3 +1,4 @@
+// Schema/Category.js
 const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
@@ -13,7 +14,12 @@ const categorySchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: [true, 'Image URL is required']
+    required: [true, 'Image URL is required'] // Existing image field (e.g., for category thumbnail)
+  },
+  bannerImage: {
+    type: String,
+    required: true, // Optional: change to true if you want it required
+    trim: true
   },
   createdAt: {
     type: Date,
